@@ -1,8 +1,10 @@
-package app.mardsoul.mapmarkers
+package app.mardsoul.mapmarkers.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import app.mardsoul.mapmarkers.R
 import app.mardsoul.mapmarkers.databinding.ActivityMainBinding
+import app.mardsoul.mapmarkers.ui.map.MapsFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,5 +14,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.container, MapsFragment.newInstance())
+                .commit()
+        }
     }
 }
