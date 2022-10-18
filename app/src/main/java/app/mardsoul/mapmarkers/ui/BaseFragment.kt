@@ -17,6 +17,8 @@ abstract class BaseFragment<VB : ViewBinding>(private val bindingInflater: Infla
     private var _binding: VB? = null
     val binding: VB get() = _binding!!
 
+    val navigator: Navigator by lazy { requireActivity() as Navigator }
+
     val viewModel: SharedViewModel by activityViewModels {
         SharedViewModelFactory(requireContext().app.markerUseCase)
     }

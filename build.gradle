@@ -10,5 +10,6 @@ ext {
     room_version = "2.4.3"
     livedata_ktx_version = "2.5.1"
     google_map_version = "18.1.0"
+    google_map_ktx = "3.0.0"
     fragment_ktx = "1.5.3"
 }

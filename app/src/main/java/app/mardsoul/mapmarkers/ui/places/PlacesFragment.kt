@@ -19,14 +19,13 @@ class PlacesFragment : BaseFragment<FragmentPlacesBinding>(FragmentPlacesBinding
 
     private fun initViews() {
         binding.placesRecyclerView.adapter = adapter
+        binding.clearButton.setOnClickListener {
+            viewModel.clearPlaces()
+            navigator.goBack()
+        }
     }
 
     private fun renderData(placeList: List<Place>) {
         adapter.setPlacesList(placeList)
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = PlacesFragment()
     }
 }

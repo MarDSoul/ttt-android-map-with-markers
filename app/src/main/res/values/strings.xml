@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Map markers</string>
     <string name="search_button_text">search</string>
+    <string name="places_menu_item">Places</string>
+    <string name="add_place_toast_text">Add place: lat: %1$.2f, lon: %2$.2f</string>
+    <string name="clear_button_text">Clear all</string>
 </resources>
