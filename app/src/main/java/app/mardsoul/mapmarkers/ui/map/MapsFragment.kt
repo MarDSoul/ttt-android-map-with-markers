@@ -10,6 +10,7 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import app.mardsoul.mapmarkers.R
+import app.mardsoul.mapmarkers.app
 import app.mardsoul.mapmarkers.databinding.FragmentMapsBinding
 import app.mardsoul.mapmarkers.domain.Place
 import app.mardsoul.mapmarkers.ui.BaseFragment
@@ -26,6 +27,8 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>(FragmentMapsBinding::infl
 
     private var googleMap: GoogleMap? = null
 
+    private val geocoderFactory: GeocoderFactory by lazy { requireContext().app.geocoderFactory }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -39,6 +42,7 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>(FragmentMapsBinding::infl
             }
             viewModel.markerLiveData.observe(viewLifecycleOwner) { refreshMarkers(it) }
         }
+        binding.searchButton.setOnClickListener { search(binding.searchEditText.text.toString()) }
     }
 
     private fun showAddToast(latLng: LatLng) {
@@ -79,5 +83,11 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>(FragmentMapsBinding::infl
         vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
         vectorDrawable.draw(canvas)
         return BitmapDescriptorFactory.fromBitmap(bitmap)
+    }
+
+    private fun search(locationName: String) {
+        if (locationName.isNotEmpty()) {
+            viewModel.searchPlace(locationName, geocoderFactory.createGeocoder())
+        }
     }
 }
