@@ -3,43 +3,42 @@ package app.mardsoul.mapmarkers.ui.map
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import app.mardsoul.mapmarkers.R
 import app.mardsoul.mapmarkers.databinding.FragmentMapsBinding
 import app.mardsoul.mapmarkers.domain.Place
 import app.mardsoul.mapmarkers.ui.BaseFragment
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.maps.android.ktx.addMarker
+import com.google.maps.android.ktx.awaitMap
+import com.google.maps.android.ktx.awaitMapLoad
 
 class MapsFragment : BaseFragment<FragmentMapsBinding>(FragmentMapsBinding::inflate) {
 
-    private val callback = OnMapReadyCallback { googleMap ->
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-    }
-
+    private var googleMap: GoogleMap? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(callback)
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        lifecycleScope.launchWhenCreated {
+            googleMap = mapFragment.awaitMap().apply { awaitMapLoad() }
+        }
         viewModel.markerLiveData.observe(viewLifecycleOwner) { refreshMarkers(it) }
     }
 
     private fun refreshMarkers(placeList: List<Place>) {
-        Toast.makeText(requireContext(), "Received places list", Toast.LENGTH_SHORT).show()
+        placeList.forEach { addPlace(it) }
+        Toast.makeText(requireContext(), "Received new places list", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun addPlace(place: Place) {
+        googleMap?.addMarker {
+            title(place.name)
+            position(place.latLng)
+            icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_baseline_pin_24))
+        }
     }
 
     companion object {
