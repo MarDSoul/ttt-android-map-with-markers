@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Map markers</string>
     <string name="search_button_text">search</string>
+    <string name="places_menu_item">Places</string>
 </resources>

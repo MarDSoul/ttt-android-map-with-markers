@@ -2,8 +2,10 @@ package app.mardsoul.mapmarkers.ui.map
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import app.mardsoul.mapmarkers.R
 import app.mardsoul.mapmarkers.databinding.FragmentMapsBinding
+import app.mardsoul.mapmarkers.domain.Place
 import app.mardsoul.mapmarkers.ui.BaseFragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -33,6 +35,11 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>(FragmentMapsBinding::infl
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+        viewModel.markerLiveData.observe(viewLifecycleOwner) { refreshMarkers(it) }
+    }
+
+    private fun refreshMarkers(placeList: List<Place>) {
+        Toast.makeText(requireContext(), "Received places list", Toast.LENGTH_SHORT).show()
     }
 
     companion object {
