@@ -35,9 +35,11 @@ class SharedViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val listAddress = geocoder.getFromLocationName(locationName, 1)
-                _searchPlaceResult.postValue(
-                    LatLng(listAddress[0].latitude, listAddress[0].longitude)
-                )
+                if (listAddress.isNotEmpty()) {
+                    _searchPlaceResult.postValue(
+                        LatLng(listAddress[0].latitude, listAddress[0].longitude)
+                    )
+                }
             }
         }
     }

@@ -1,23 +1,17 @@
 package app.mardsoul.mapmarkers.ui.map
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.annotation.DrawableRes
-import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import app.mardsoul.mapmarkers.R
 import app.mardsoul.mapmarkers.app
 import app.mardsoul.mapmarkers.databinding.FragmentMapsBinding
 import app.mardsoul.mapmarkers.domain.Place
 import app.mardsoul.mapmarkers.ui.BaseFragment
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.ktx.addMarker
 import com.google.maps.android.ktx.awaitMap
@@ -41,8 +35,13 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>(FragmentMapsBinding::infl
                 }
             }
             viewModel.markerLiveData.observe(viewLifecycleOwner) { refreshMarkers(it) }
+            viewModel.searchPlaceResult.observe(viewLifecycleOwner) { moveCamera(it) }
         }
         binding.searchButton.setOnClickListener { search(binding.searchEditText.text.toString()) }
+    }
+
+    private fun moveCamera(latLng: LatLng) {
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
     }
 
     private fun showAddToast(latLng: LatLng) {
@@ -60,29 +59,8 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>(FragmentMapsBinding::infl
         googleMap?.addMarker {
             title(place.name)
             position(place.latLng)
-            icon(bitmapDescriptorFromVector(R.drawable.ic_baseline_pin_24))
+            icon(BitmapHelper.vectorToBitmap(requireContext(), R.drawable.ic_baseline_pin_24))
         }
-    }
-
-    /**
-     * Taken from ApiDemos on GitHub:
-     * https://github.com/googlemaps/android-samples/blob/master/ApiDemos/kotlin/app/src/main/java/com/example/kotlindemos/MarkerDemoActivity.kt
-     */
-    private fun bitmapDescriptorFromVector(@DrawableRes vectorResId: Int): BitmapDescriptor {
-        val vectorDrawable = ResourcesCompat.getDrawable(resources, vectorResId, null)
-        if (vectorDrawable == null) {
-            Log.e("BitmapHelper", "Resource not found")
-            return BitmapDescriptorFactory.defaultMarker()
-        }
-        val bitmap = Bitmap.createBitmap(
-            vectorDrawable.intrinsicWidth,
-            vectorDrawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(bitmap)
-        vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
-        vectorDrawable.draw(canvas)
-        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
     private fun search(locationName: String) {
