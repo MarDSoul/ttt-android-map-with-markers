@@ -3,5 +3,9 @@
     <string name="search_button_text">search</string>
     <string name="places_menu_item">Places</string>
     <string name="add_place_toast_text">Add place: lat: %1$.2f, lon: %2$.2f</string>
+    <string name="item_lat_text">Lat: %1$.3f</string>
+    <string name="item_lon_text">Lon: %1$.3f</string>
+    <string name="item_def_name_text">No name</string>
+    <string name="item_def_annot_text">No annotation</string>
     <string name="clear_button_text">Clear all</string>
 </resources>
