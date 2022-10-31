@@ -19,10 +19,12 @@ import app.mardsoul.mapmarkers.app
 import app.mardsoul.mapmarkers.databinding.FragmentMapsBinding
 import app.mardsoul.mapmarkers.domain.Place
 import app.mardsoul.mapmarkers.ui.BaseFragment
+import app.mardsoul.mapmarkers.ui.showSnackbar
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.snackbar.Snackbar
 import com.google.maps.android.ktx.addMarker
 import com.google.maps.android.ktx.awaitMap
 import com.google.maps.android.ktx.awaitMapLoad
@@ -42,13 +44,17 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>(FragmentMapsBinding::infl
             if (it) getLocation()
         }
 
-    private fun checkPermissions() {
+    private fun checkPermission() {
         when {
             isGranted() -> {
                 getLocation()
             }
             isRatio() -> {
-                requestPermission()
+                binding.root.showSnackbar(
+                    msg = resources.getString(R.string.permission_requared),
+                    length = Snackbar.LENGTH_INDEFINITE,
+                    actionMessage = resources.getString(R.string.ok)
+                ) { requestPermission() }
             }
             else -> {
                 requestPermission()
@@ -73,7 +79,6 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>(FragmentMapsBinding::infl
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
     }
-
 
     @SuppressLint("MissingPermission")
     private fun getLocation() {
@@ -104,6 +109,7 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>(FragmentMapsBinding::infl
             viewModel.markerLiveData.observe(viewLifecycleOwner) { refreshMarkers(it) }
             viewModel.searchPlaceResult.observe(viewLifecycleOwner) { moveCamera(it) }
         }
+        checkPermission()
         binding.searchButton.setOnClickListener { search(binding.searchEditText.text.toString()) }
     }
 
@@ -136,5 +142,3 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>(FragmentMapsBinding::infl
         }
     }
 }
-
-fun Location.toLatLng() = LatLng(latitude, longitude)

@@ -8,4 +8,6 @@
     <string name="item_def_name_text">No name</string>
     <string name="item_def_annot_text">No annotation</string>
     <string name="clear_button_text">Clear all</string>
+    <string name="permission_requared">Need permission to use map with your location</string>
+    <string name="ok">OK</string>
 </resources>
