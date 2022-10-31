@@ -1,8 +1,18 @@
 package app.mardsoul.mapmarkers.ui.map
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import app.mardsoul.mapmarkers.R
 import app.mardsoul.mapmarkers.app
@@ -22,6 +32,63 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>(FragmentMapsBinding::infl
     private var googleMap: GoogleMap? = null
 
     private val geocoderFactory: GeocoderFactory by lazy { requireContext().app.geocoderFactory }
+
+    private val locationListener = LocationListener {
+        moveCamera(LatLng(it.latitude, it.longitude))
+    }
+
+    private val locationPermissionRequest =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            if (it) getLocation()
+        }
+
+    private fun checkPermissions() {
+        when {
+            isGranted() -> {
+                getLocation()
+            }
+            isRatio() -> {
+                requestPermission()
+            }
+            else -> {
+                requestPermission()
+            }
+        }
+    }
+
+    private fun requestPermission() {
+        locationPermissionRequest.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+    }
+
+    private fun isGranted(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun isRatio(): Boolean {
+        return ActivityCompat.shouldShowRequestPermissionRationale(
+            requireActivity(),
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+    }
+
+
+    @SuppressLint("MissingPermission")
+    private fun getLocation() {
+        val locationManager =
+            requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        locationManager.requestLocationUpdates(
+            LocationManager.GPS_PROVIDER,
+            60000,
+            100f,
+            locationListener
+        )
+
+        val lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -69,3 +136,5 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>(FragmentMapsBinding::infl
         }
     }
 }
+
+fun Location.toLatLng() = LatLng(latitude, longitude)

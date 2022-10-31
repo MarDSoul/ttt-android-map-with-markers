@@ -3,8 +3,8 @@ package app.mardsoul.mapmarkers
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
-import app.mardsoul.mapmarkers.data.MarkerUseCaseImpl
-import app.mardsoul.mapmarkers.database.AppDatabase
+import app.mardsoul.mapmarkers.data.usecaseimpl.MarkerUseCaseImpl
+import app.mardsoul.mapmarkers.data.database.AppDatabase
 import app.mardsoul.mapmarkers.domain.MarkerUseCase
 import app.mardsoul.mapmarkers.ui.map.GeocoderFactory
 

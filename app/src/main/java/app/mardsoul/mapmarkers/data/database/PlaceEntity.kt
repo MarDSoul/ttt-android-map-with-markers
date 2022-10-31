@@ -1,4 +1,4 @@
-package app.mardsoul.mapmarkers.database
+package app.mardsoul.mapmarkers.data.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
