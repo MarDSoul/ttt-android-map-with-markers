@@ -22,6 +22,10 @@ class MarkerInfoWindowAdapter(private val context: Context) : GoogleMap.InfoWind
             nameTextView.text = place.name ?: context.getString(R.string.item_def_name_text)
             annotationTextView.text =
                 place.annotation ?: context.getString(R.string.item_def_annot_text)
+            latTextView.text =
+                context.getString(R.string.item_lat_text, place.latLng.latitude)
+            lonTextView.text =
+                context.getString(R.string.item_lon_text, place.latLng.longitude)
         }
         return binding.root
     }

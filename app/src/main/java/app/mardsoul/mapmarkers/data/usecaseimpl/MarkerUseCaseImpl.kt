@@ -18,7 +18,6 @@ class MarkerUseCaseImpl(
             databaseDao.addPlace(convertPlaceToEntity(place))
         }
 
-
     override fun getPlaces(): Flow<List<Place>> {
         return databaseDao.getPlaces()
             .map { list -> list.map { it.toPlace() } }
