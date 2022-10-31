@@ -1,13 +1,15 @@
 package app.mardsoul.mapmarkers.ui.places
 
 import android.view.LayoutInflater
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import app.mardsoul.mapmarkers.R
 import app.mardsoul.mapmarkers.databinding.ItemPlaceBinding
 import app.mardsoul.mapmarkers.domain.Place
 
-class PlacesAdapter : RecyclerView.Adapter<PlacesAdapter.PlacesViewHolder>() {
+class PlacesAdapter(private val clickListener: OnClickListener) :
+    RecyclerView.Adapter<PlacesAdapter.PlacesViewHolder>() {
 
     private var placesList = mutableListOf<Place>()
 
@@ -36,7 +38,9 @@ class PlacesAdapter : RecyclerView.Adapter<PlacesAdapter.PlacesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlacesViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemPlaceBinding.inflate(inflater, parent, false)
+        val binding = ItemPlaceBinding.inflate(inflater, parent, false).also {
+            it.editPlaceImageView.setOnClickListener(clickListener)
+        }
         return PlacesViewHolder(binding)
     }
 
