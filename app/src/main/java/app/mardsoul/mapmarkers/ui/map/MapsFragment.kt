@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
-import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
@@ -105,6 +104,7 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>(FragmentMapsBinding::infl
                     viewModel.addPlace(it)
                     showAddToast(it)
                 }
+                setInfoWindowAdapter(MarkerInfoWindowAdapter(requireContext()))
             }
             viewModel.markerLiveData.observe(viewLifecycleOwner) { refreshMarkers(it) }
             viewModel.searchPlaceResult.observe(viewLifecycleOwner) { moveCamera(it) }
@@ -129,11 +129,11 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>(FragmentMapsBinding::infl
     }
 
     private fun addPlace(place: Place) {
-        googleMap?.addMarker {
-            title(place.name)
+        val marker = googleMap?.addMarker {
             position(place.latLng)
             icon(BitmapHelper.vectorToBitmap(requireContext(), R.drawable.ic_baseline_pin_24))
         }
+        marker?.tag = place
     }
 
     private fun search(locationName: String) {
