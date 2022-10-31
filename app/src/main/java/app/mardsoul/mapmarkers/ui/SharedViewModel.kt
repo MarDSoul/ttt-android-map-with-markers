@@ -31,6 +31,18 @@ class SharedViewModel(
         }
     }
 
+    fun updatePlace(place: Place){
+        viewModelScope.launch {
+            markerUseCase.updatePlace(place)
+        }
+    }
+
+    fun deletePlace(place: Place){
+        viewModelScope.launch {
+            markerUseCase.deletePlace(place)
+        }
+    }
+
     fun searchPlace(locationName: String, geocoder: Geocoder) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {

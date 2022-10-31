@@ -25,4 +25,8 @@
     <string name="permission_requared">Need permission to use map with your location</string>
     <string name="ok">OK</string>
 
+    <!--    Alert dialog-->
+    <string name="name_place_dialog_text">Place name</string>
+    <string name="annotation_place_dialog_text">Place annotation</string>
+    <string name="positive_button_dialog">Save changes</string>
 </resources>

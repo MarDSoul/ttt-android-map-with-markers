@@ -32,6 +32,7 @@ class PlacesAdapter(private val clickListener: OnClickListener) :
                     itemViewContext.getString(R.string.item_lat_text, place.latLng.latitude)
                 lonTextView.text =
                     itemViewContext.getString(R.string.item_lon_text, place.latLng.longitude)
+                editPlaceImageView.tag = place
             }
         }
     }
