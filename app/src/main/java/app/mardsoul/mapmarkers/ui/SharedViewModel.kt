@@ -31,13 +31,13 @@ class SharedViewModel(
         }
     }
 
-    fun updatePlace(place: Place){
+    fun updatePlace(place: Place) {
         viewModelScope.launch {
             markerUseCase.updatePlace(place)
         }
     }
 
-    fun deletePlace(place: Place){
+    fun deletePlace(place: Place) {
         viewModelScope.launch {
             markerUseCase.deletePlace(place)
         }

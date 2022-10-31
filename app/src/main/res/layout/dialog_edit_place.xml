@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/margin_8dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/margin_8dp">
 
     <TextView
         android:id="@+id/name_text_view"
@@ -16,8 +15,8 @@
         android:id="@+id/name_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="1"
-        tools:text="New name" />
+        android:hint="@string/name_hint_dialog_text"
+        android:inputType="text" />
 
     <TextView
         android:id="@+id/annotation_text_view"
@@ -29,6 +28,7 @@
         android:id="@+id/annotation_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="New annotation" />
+        android:hint="@string/annotation_hint_dialog_text"
+        android:inputType="textMultiLine" />
 
 </LinearLayout>

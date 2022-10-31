@@ -29,4 +29,6 @@
     <string name="name_place_dialog_text">Place name</string>
     <string name="annotation_place_dialog_text">Place annotation</string>
     <string name="positive_button_dialog">Save changes</string>
+    <string name="name_hint_dialog_text">Enter place name</string>
+    <string name="annotation_hint_dialog_text">Enter place annotation</string>
 </resources>
