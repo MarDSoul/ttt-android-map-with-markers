@@ -16,7 +16,7 @@ class MarkerInfoWindowAdapter(private val context: Context) : GoogleMap.InfoWind
         LayoutMarkerInfoBinding.inflate(inflater, null, false)
     }
 
-    override fun getInfoContents(marker: Marker): View? {
+    override fun getInfoContents(marker: Marker): View {
         val place = marker.tag as Place
         with(binding) {
             nameTextView.text = place.name ?: context.getString(R.string.item_def_name_text)

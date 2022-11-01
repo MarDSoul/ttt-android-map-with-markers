@@ -44,7 +44,7 @@ class PlacesFragment : BaseFragment<FragmentPlacesBinding>(FragmentPlacesBinding
         )
     }
 
-    fun showEditAlertDialog(place: Place) {
+    private fun showEditAlertDialog(place: Place) {
         val dialogBinding = DialogEditPlaceBinding.inflate(layoutInflater)
         with(dialogBinding) {
             nameEditText.setText(place.name)
