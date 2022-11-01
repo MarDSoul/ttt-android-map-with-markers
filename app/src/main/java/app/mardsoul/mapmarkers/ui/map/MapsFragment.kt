@@ -2,10 +2,7 @@ package app.mardsoul.mapmarkers.ui.map
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.PackageManager
-import android.location.LocationListener
-import android.location.LocationManager
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -19,6 +16,8 @@ import app.mardsoul.mapmarkers.databinding.FragmentMapsBinding
 import app.mardsoul.mapmarkers.domain.Place
 import app.mardsoul.mapmarkers.ui.BaseFragment
 import app.mardsoul.mapmarkers.ui.showSnackbar
+import app.mardsoul.mapmarkers.ui.toLatLng
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -34,19 +33,17 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>(FragmentMapsBinding::infl
 
     private val geocoderFactory: GeocoderFactory by lazy { requireContext().app.geocoderFactory }
 
-    private val locationListener = LocationListener {
-        moveCamera(LatLng(it.latitude, it.longitude))
-    }
-
     private val locationPermissionRequest =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-            if (it) getLocation()
+            if (it) {
+                updateLocationUi(googleMap)
+            }
         }
 
     private fun checkPermission() {
         when {
             isGranted() -> {
-                getLocation()
+                getDeviceLocation()
             }
             isRatio() -> {
                 binding.root.showSnackbar(
@@ -80,18 +77,15 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>(FragmentMapsBinding::infl
     }
 
     @SuppressLint("MissingPermission")
-    private fun getLocation() {
-        val locationManager =
-            requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-        locationManager.requestLocationUpdates(
-            LocationManager.GPS_PROVIDER,
-            60000,
-            100f,
-            locationListener
-        )
-
-        val lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+    private fun getDeviceLocation() {
+        val fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireContext())
+        val locationResult = fusedLocationProviderClient.lastLocation
+        locationResult.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                moveCamera(task.result.toLatLng())
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -105,12 +99,28 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>(FragmentMapsBinding::infl
                     showAddToast(it)
                 }
                 setInfoWindowAdapter(MarkerInfoWindowAdapter(requireContext()))
+                uiSettings.isZoomControlsEnabled = true
+                updateLocationUi(this)
             }
             viewModel.markerLiveData.observe(viewLifecycleOwner) { refreshMarkers(it) }
             viewModel.searchPlaceResult.observe(viewLifecycleOwner) { moveCamera(it) }
         }
-        checkPermission()
         binding.searchButton.setOnClickListener { search(binding.searchEditText.text.toString()) }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun updateLocationUi(googleMap: GoogleMap?) {
+        googleMap?.let { map ->
+            if (isGranted()) {
+                map.isMyLocationEnabled = true
+                map.uiSettings.isMyLocationButtonEnabled = true
+                getDeviceLocation()
+            } else {
+                map.isMyLocationEnabled = false
+                map.uiSettings.isMyLocationButtonEnabled = false
+                checkPermission()
+            }
+        }
     }
 
     private fun moveCamera(latLng: LatLng) {

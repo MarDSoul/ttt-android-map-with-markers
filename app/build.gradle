@@ -50,8 +50,9 @@ dependencies {
     //GoogleMap
     implementation "com.google.android.gms:play-services-maps:$google_map_version"
 
-    // Maps SDK for Android KTX Library
+    // Maps SDK and location
     implementation "com.google.maps.android:maps-ktx:$google_map_ktx"
+    implementation "com.google.android.gms:play-services-location:$services_location"
 
     //Room
     implementation "androidx.room:room-ktx:$room_version"
