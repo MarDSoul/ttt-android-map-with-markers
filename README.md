@@ -12,4 +12,12 @@ Maps.
 ### Installing
 
 I've used  [Secrets Gradle Plugin for Android](https://github.com/google/secrets-gradle-plugin). For
-work you need edit *local.properties* file: add line `GOOGLE_MAPS_API_KEY= Your API key` 
+work you need edit *local.properties* file: add line `GOOGLE_MAPS_API_KEY=Your API key`
+
+### Used
+
+- Kotlin
+- ViewModel and LiveData
+- Google Maps Platform with Geocoder
+- LocationServices for get device location
+- Room - for save and change markers

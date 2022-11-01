@@ -1,7 +1,37 @@
 <resources>
     <string name="app_name">Map markers</string>
-    <string name="search_button_text">search</string>
-    <string name="places_menu_item">Places</string>
-    <string name="add_place_toast_text">Add place: lat: %1$.2f, lon: %2$.2f</string>
+
+    <!--    Buttons-->
+    <string name="search_button_text">Search</string>
     <string name="clear_button_text">Clear all</string>
+
+    <string name="search_hint_text">Enter place name</string>
+
+    <!--    Top menu-->
+    <string name="places_menu_item">Places</string>
+
+    <!--    Popup menu-->
+    <string name="edit_marker_menu">Edit</string>
+    <string name="delete_marker_menu">Delete</string>
+
+    <!--    Recycler item-->
+    <string name="item_lat_text">Lat: %1$.3f</string>
+    <string name="item_lon_text">Lon: %1$.3f</string>
+    <string name="menu_image_description">Edit place menu</string>
+
+    <!--    Default marker-->
+    <string name="item_def_name_text">No name</string>
+    <string name="item_def_annot_text">No annotation</string>
+
+    <!--    Events-->
+    <string name="add_place_toast_text">Add place: lat: %1$.2f, lon: %2$.2f</string>
+    <string name="permission_requared">Need permission to use map with your location</string>
+    <string name="ok">OK</string>
+
+    <!--    Alert dialog-->
+    <string name="name_place_dialog_text">Place name</string>
+    <string name="annotation_place_dialog_text">Place annotation</string>
+    <string name="positive_button_dialog">Save changes</string>
+    <string name="name_hint_dialog_text">Enter place name</string>
+    <string name="annotation_hint_dialog_text">Enter place annotation</string>
 </resources>

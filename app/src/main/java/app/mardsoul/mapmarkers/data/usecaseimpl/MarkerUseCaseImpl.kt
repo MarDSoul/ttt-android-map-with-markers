@@ -1,7 +1,7 @@
-package app.mardsoul.mapmarkers.data
+package app.mardsoul.mapmarkers.data.usecaseimpl
 
-import app.mardsoul.mapmarkers.database.AppDatabaseDao
-import app.mardsoul.mapmarkers.database.PlaceEntity
+import app.mardsoul.mapmarkers.data.database.AppDatabaseDao
+import app.mardsoul.mapmarkers.data.database.PlaceEntity
 import app.mardsoul.mapmarkers.domain.MarkerUseCase
 import app.mardsoul.mapmarkers.domain.Place
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +17,6 @@ class MarkerUseCaseImpl(
         withContext(Dispatchers.IO) {
             databaseDao.addPlace(convertPlaceToEntity(place))
         }
-
 
     override fun getPlaces(): Flow<List<Place>> {
         return databaseDao.getPlaces()
