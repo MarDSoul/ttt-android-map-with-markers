@@ -19,4 +19,5 @@ work you need edit *local.properties* file: add line `GOOGLE_MAPS_API_KEY=Your A
 - Kotlin
 - ViewModel and LiveData
 - Google Maps Platform with Geocoder
+- LocationServices for get device location
 - Room - for save and change markers
